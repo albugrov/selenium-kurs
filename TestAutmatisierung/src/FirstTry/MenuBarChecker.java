@@ -95,12 +95,14 @@ public class MenuBarChecker{
 	        columnSubTitleTitle.put("vQmods","vQmods");
 	    	
 	        // Step "Login"
+	        
 	        webDriver.get("http://localhost/litecart/admin/");
 	        webDriver.findElement(By.cssSelector("[type=\"text\"]")).sendKeys("admin");
 	        webDriver.findElement(By.cssSelector("input[type=\"password\"]")).sendKeys("admin");
 	        webDriver.findElement(By.cssSelector("#box-login > form > div.footer > button")).click();
 	        
 	        //Step "Check fisrt line of menu bar"
+	        
         	webDriver.findElement(By.cssSelector("a[href*='http://localhost/litecart/admin/?app=appearance&']")).click();
         	webDriver.findElement(By.cssSelector(".docs li:nth-child(1)")).click();
         	pageTitel = webDriver.findElement(By.cssSelector("#content > h1")).getText();
@@ -110,6 +112,7 @@ public class MenuBarChecker{
 	        Assert.assertEquals(pageTitel, "Logotype");
 	        
 	        // Step "Check menu bar"
+	        
 	        leftcolumn = webDriver.findElements(By.cssSelector("#app- >a >span.name"));	        
 	        
         	for(int i=1;i<leftcolumn.size();i++) {
