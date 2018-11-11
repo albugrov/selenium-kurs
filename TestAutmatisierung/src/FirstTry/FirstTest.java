@@ -13,10 +13,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-
-
-
-public class FirstTest {
+public class MenuBarChecker{
+	
+    WebDriver webDriver;
+    WebDriverWait wait;
+    
 	private static Function<WebDriver,WebElement> elementLocated(final By locator) {
 		return new Function<WebDriver, WebElement>() {
 		@Override
@@ -27,14 +28,11 @@ public class FirstTest {
 	}
 
 	public static void main(String[] args) {
-		FirstTest firstTest = new FirstTest();
-		firstTest.test();
+		MenuBarChecker menuBarChecker = new MenuBarChecker();
+		menuBarChecker.testMenuBar();
 	}
 
-	    WebDriver webDriver;
-	    WebDriverWait wait;
-
-	    public void test(){
+	    public void testMenuBar(){
 	        System.setProperty("webdriver.chrome.driver", "/Utils/chromedriver.exe");
 	        webDriver = new ChromeDriver();
 	        wait = new WebDriverWait(webDriver,10);
@@ -94,21 +92,22 @@ public class FirstTest {
 	        columnSubTitleTitle.put("users&']","Users");
 	        columnSubTitleTitle.put("vQmods","vQmods");
 	    	
-	        
 	        // Step "Login"
 	        webDriver.get("http://localhost/litecart/admin/");
 	        webDriver.findElement(By.cssSelector("[type=\"text\"]")).sendKeys("admin");
 	        webDriver.findElement(By.cssSelector("input[type=\"password\"]")).sendKeys("admin");
 	        webDriver.findElement(By.cssSelector("#box-login > form > div.footer > button")).click();
-	               	
+	        
+	        //Step "Check fisrt line of menu bar"
         	webDriver.findElement(By.cssSelector("a[href*='http://localhost/litecart/admin/?app=appearance&']")).click();
         	webDriver.findElement(By.cssSelector(".docs li:nth-child(1)")).click();
         	pageTitel = webDriver.findElement(By.cssSelector("#content > h1")).getText();
         	Assert.assertEquals(pageTitel,"Template");
 	        webDriver.findElement(By.cssSelector(".docs li:nth-child(2)")).click();
 	        pageTitel = webDriver.findElement(By.cssSelector("#content > h1")).getText();
-	        Assert.assertEquals(pageTitel,"Logotype");
+	        Assert.assertEquals(pageTitel, "Logotype");
 	        
+	        // Step "Check menu bar"
 	        leftcolumn = webDriver.findElements(By.cssSelector("#app- >a >span.name"));	        
 	        
         	for(int i=1;i<leftcolumn.size();i++) {
@@ -116,21 +115,22 @@ public class FirstTest {
         	}
 	   
 	        
-	        for(int i=0;i<leftColumnTitels.size();i++) {
+	        for(int i = 0; i<leftColumnTitels.size(); i++) {
 		        name = leftColumnTitels.get(i).toLowerCase().replaceAll("\\s", "_") + "&']";
 		        cssMenuSelectorTemp = "a[href*='http://localhost/litecart/admin/?app=" + name;
 		        webDriver.findElement(By.cssSelector(cssMenuSelectorTemp)).click();
 		        temp = webDriver.findElements(By.cssSelector("#app- > ul > li"));
 		        if (temp.size()>0) {
-		        	for(int j=1;j<=temp.size();j++) {
-		        	String columnSubtitleName = webDriver.findElement(By.cssSelector("#app- > ul > li:nth-child(" + j + ")" )).getText();			        	webDriver.findElement(By.cssSelector("#app- > ul > li:nth-child(" + j + ")" )).click();
+		        	for(int j = 1;j <=temp.size(); j++) {
+		        	String columnSubtitleName = webDriver.findElement(By.cssSelector("#app- > ul > li:nth-child(" + j + ")" )).getText();			        	
+		        	webDriver.findElement(By.cssSelector("#app- > ul > li:nth-child(" + j + ")" )).click();
 		        	pageTitel = webDriver.findElement(By.cssSelector("#content > h1")).getText();
-		        	Assert.assertEquals(pageTitel,columnSubTitleTitle.get(columnSubtitleName));
+		        	Assert.assertEquals(pageTitel, columnSubTitleTitle.get(columnSubtitleName));
 		        	}
 		        }
 		        else {
 		        	pageTitel = webDriver.findElement(By.cssSelector("#content > h1")).getText();
-		        	Assert.assertEquals(pageTitel,leftColumnTitels.get(i));
+		        	Assert.assertEquals(pageTitel, leftColumnTitels.get(i));
 		        }
 	        }
 	         
