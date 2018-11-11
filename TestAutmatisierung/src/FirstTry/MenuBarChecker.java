@@ -15,6 +15,8 @@ import org.testng.Assert;
 
 public class MenuBarChecker{
 	
+	// Task 7
+	
     WebDriver webDriver;
     WebDriverWait wait;
     
