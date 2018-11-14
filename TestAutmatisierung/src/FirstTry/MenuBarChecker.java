@@ -101,7 +101,7 @@ public class MenuBarChecker{
 	        webDriver.findElement(By.cssSelector("input[type=\"password\"]")).sendKeys("admin");
 	        webDriver.findElement(By.cssSelector("#box-login > form > div.footer > button")).click();
 	        
-	        //Step "Check fisrt line of menu bar"
+	        //Step "Check first line of menu bar"
 	        
         	webDriver.findElement(By.cssSelector("a[href*='http://localhost/litecart/admin/?app=appearance&']")).click();
         	webDriver.findElement(By.cssSelector(".docs li:nth-child(1)")).click();
