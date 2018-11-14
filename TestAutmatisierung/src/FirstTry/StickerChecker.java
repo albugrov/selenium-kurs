@@ -15,7 +15,7 @@ import org.testng.Assert;
 
 public class StickerChecker{
 	
-	// Task 7
+	// Task 8
 	
     WebDriver webDriver;
     WebDriverWait wait;
