@@ -13,7 +13,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-public class CountrySortingChecker{
+public class CountryOrderChecker{
 	
 	// Task 9
 	
@@ -30,8 +30,8 @@ public class CountrySortingChecker{
 	}
 
 	public static void main(String[] args) {
-		CountrySortingChecker stickerChecker = new CountrySortingChecker();
-		stickerChecker.testSortOfCountries();
+		CountryOrderChecker countryOrderChecker = new CountryOrderChecker();
+		countryOrderChecker.testSortOfCountries();
 	}
 
 	    public void testSortOfCountries(){
@@ -40,6 +40,7 @@ public class CountrySortingChecker{
 	        wait = new WebDriverWait(webDriver,10);
 	    	String url = "http://localhost/litecart/admin/?app=countries&doc=countries";
 	    	List<WebElement> countries = new ArrayList<WebElement>();
+	    	List<WebElement> zones = new ArrayList<WebElement>();
 	    	List<String> countryNamesSorted = new ArrayList<String>();
 	    	List<String> countryNames = new ArrayList<String>();
 	    	List<Integer> countryZonesIndex = new ArrayList<Integer>();
@@ -62,7 +63,6 @@ public class CountrySortingChecker{
 	    	
 	    	countries = webDriver.findElements(By.cssSelector("form[name=countries_form] tr td:nth-child(5)"));
 	    	
-	    	// Step 3 "Check the number of stickers of each image"
 	    	for(int i = 0; i < countries.size(); i++) {
 	    		countryTemp = countries.get(i).getAttribute("innerText");
 	    		countryNames.add(countryTemp);
@@ -75,7 +75,7 @@ public class CountrySortingChecker{
 	    	countryNames.clear();
 	    	countryNamesSorted.clear();
 	    	
-	    	// Step 4 "Check the order of zones"
+	    	// Step 4 "Check the order of zones on the the counry page"
 
 	    	for(int i = 2; i < countries.size(); i++) {
 	    		countryRow = webDriver.findElement(By.cssSelector("form[name=countries_form]  .row:nth-child(" + i + ")"));
@@ -101,7 +101,33 @@ public class CountrySortingChecker{
 		    	countryNamesSorted.clear();
 		    	webDriver.get(url);
 		    	
-	    	}	    	
+	    	}
+	    	
+	    	// Step 5 "Check the order of zones on the zone page"
+
+	    	webDriver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+	    	countries = webDriver.findElements(By.cssSelector("form[name='geo_zones_form'] .row"));
+	    	
+	    	for(int i = 0; i < countries.size(); i++) {
+	    		countryRow = webDriver.findElement(By.cssSelector("form[name='geo_zones_form'] .row"));
+	    		countryRow.findElement(By.cssSelector("td:nth-child(3) a[href]")).click();
+
+	    		zones = webDriver.findElements(By.cssSelector("#table-zones tr td:nth-child(3) select[name*='zones'] option[selected='selected']"));
+	    		for(int j = 0; j < zones.size(); j++) {
+	    			String co = zones.get(j).getText();
+	    			countryNames.add(co);
+	    			countryNamesSorted.add(co);
+	    		}
+	    		countryNamesSorted.sort(String.CASE_INSENSITIVE_ORDER);		    	
+		    	Assert.assertEquals(countryNames,countryNamesSorted);
+		    	countryNames.clear();
+		    	countryNamesSorted.clear();
+		    	webDriver.get("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+		    	
+	    	}
+
+	    	
+	    	
 	    	webDriver.quit();
 	        webDriver = null;
 	    }
